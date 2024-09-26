@@ -1,0 +1,36 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          version-type: strict
+          otp-version: "27.1.1"
+          elixir-version: "1.17.3"
+      - run: elixir tcp_socket_lock_test.exs
+      - run: elixir unix_socket_lock_test.exs
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install elixir
+      - run: elixir tcp_socket_lock_test.exs
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          version-type: strict
+          otp-version: "27.1.1"
+          elixir-version: "1.17.3"
+      - run: elixir tcp_socket_lock_test.exs
+      - run: elixir unix_socket_lock_test.exs
